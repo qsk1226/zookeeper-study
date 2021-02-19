@@ -28,7 +28,7 @@ public class TestZkClientWatcher {
     public  void testZkClientWatcher1() throws Exception {
         ZkClient zkc = new ZkClient(new ZkConnection(CONNECT_ADDR), SESSION_OUTTIME);
         String digestPassword = DigestGenerator.generateDigest("user1:123456");
-        zkc.addAuthInfo("auth", ("user1:"+digestPassword).getBytes(Charsets.UTF_8));
+        zkc.addAuthInfo("auth", digestPassword.getBytes(Charsets.UTF_8));
         //对父节点添加监听子节点变化。
         zkc.subscribeChildChanges("/super", new IZkChildListener() {
             @Override
