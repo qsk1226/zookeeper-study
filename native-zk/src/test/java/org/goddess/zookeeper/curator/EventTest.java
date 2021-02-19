@@ -10,8 +10,11 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
+import org.goddess.zookeeper.DigestGenerator;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,8 +52,16 @@ public class EventTest {
 
 	@org.junit.Before
 	public void init() {
+		String digest = DigestGenerator.generateDigest("user1:123456");
 		//创建 CuratorFrameworkImpl实例
-		client = CuratorFrameworkFactory.newClient(SERVER, SESSION_TIMEOUT, CONNECTION_TIMEOUT, retryPolicy);
+		client = CuratorFrameworkFactory.builder()
+				.connectString(SERVER)
+				.sessionTimeoutMs(SESSION_TIMEOUT)
+				.connectionTimeoutMs(CONNECTION_TIMEOUT)
+				.retryPolicy(retryPolicy)
+				//.authorization("digest", ("user1" + digest).getBytes(StandardCharsets.UTF_8))
+				.build();
+
 
 		//启动
 		client.start();

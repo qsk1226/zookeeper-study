@@ -1,7 +1,9 @@
 package org.goddess.zookeeper.zkclient;
 
+import com.google.common.base.Charsets;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
+import org.goddess.zookeeper.DigestGenerator;
 
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class ZkClientOperator {
     public static void main(String[] args) throws Exception {
        //ZkClient zkc = new ZkClient(new ZkConnection(CONNECT_ADDR), SESSION_OUTTIME);
         ZkClient zkc = new ZkClient(CONNECT_ADDR, SESSION_OUTTIME);
+        String digestPassword = DigestGenerator.generateDigest("user1:123456");
+        zkc.addAuthInfo("auth", ("user1:"+digestPassword).getBytes(Charsets.UTF_8));
 
         //1. create and delete方法
         zkc.createEphemeral("/temp");

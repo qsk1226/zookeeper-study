@@ -1,11 +1,15 @@
 package org.goddess.zookeeper.zkclient;
 
+import com.google.common.base.Charsets;
 import org.I0Itec.zkclient.IZkChildListener;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
+import org.goddess.zookeeper.DigestGenerator;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -26,7 +30,8 @@ public class TestZkClientWatcher {
      */
     public  void testZkClientWatcher1() throws Exception {
         ZkClient zkc = new ZkClient(new ZkConnection(CONNECT_ADDR), SESSION_OUTTIME);
-
+        String digestPassword = DigestGenerator.generateDigest("user1:123456");
+        zkc.addAuthInfo("auth", ("user1:"+digestPassword).getBytes(Charsets.UTF_8));
         //对父节点添加监听子节点变化。
         zkc.subscribeChildChanges("/super", new IZkChildListener() {
             @Override
