@@ -11,6 +11,7 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.goddess.zookeeper.DigestGenerator;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
@@ -27,7 +28,7 @@ import java.util.concurrent.Executors;
 public class EventTest {
 
 	//ZooKeeper服务地址
-	private static final String SERVER = "192.168.30.10:2181";
+	private static final String SERVER = "127.0.0.1:2181";
 
 	//会话超时时间
 	private final int SESSION_TIMEOUT = 30000;
@@ -50,7 +51,7 @@ public class EventTest {
 	 */
 	RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
 
-	@org.junit.Before
+	@Before
 	public void init() {
 		String digest = DigestGenerator.generateDigest("user1:123456");
 		//创建 CuratorFrameworkImpl实例
@@ -59,12 +60,21 @@ public class EventTest {
 				.sessionTimeoutMs(SESSION_TIMEOUT)
 				.connectionTimeoutMs(CONNECTION_TIMEOUT)
 				.retryPolicy(retryPolicy)
-				//.authorization("digest", ("user1" + digest).getBytes(StandardCharsets.UTF_8))
+				.authorization("digest", digest.getBytes(StandardCharsets.UTF_8))
 				.build();
 
 
 		//启动
 		client.start();
+	}
+
+	@Test
+	public void xx() {
+		try {
+			client.delete().forPath("/goddess");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
