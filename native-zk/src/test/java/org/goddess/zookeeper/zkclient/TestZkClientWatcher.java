@@ -12,9 +12,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-/**
- * Created by VULCAN on 2018/11/7.
- */
 public class TestZkClientWatcher {
 
 

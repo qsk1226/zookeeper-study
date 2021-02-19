@@ -7,9 +7,6 @@ import org.goddess.zookeeper.DigestGenerator;
 
 import java.util.List;
 
-/**
- * Created by VULCAN on 2018/11/7.
- */
 public class ZkClientOperator {
 
     /** zookeeper地址 */
